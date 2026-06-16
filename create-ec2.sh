@@ -14,7 +14,7 @@ for name in ${instances[@]}; do
     instance_id=$(aws ec2 run-instances --image-id ami-0220d79f3f480ecf5 --instance-type $instance_type --security-group-ids sg-07eb8366c0af7070b --subnet-id subnet-0541e90ebd6e0c784 --query 'Instances[0].InstanceId' --output text)
     echo "Instance created for: $name"
 
-    aws ec2 create-tags --resources $instance_id --tags key=Name,value=$name
+    aws ec2 create-tags --resources $instance_id --tags Key=Name,Value=$name
 
     private_ip=$(aws ec2 describe-instances --instance-ids i-0b9d7fdcd7c44cdd5 --query 'Reservations[0].Instances[0].[PrivateIpAddress]' --output text)
 
@@ -30,7 +30,7 @@ for name in ${instances[@]}; do
 
     aws route53 change-resource-record-sets --hosted-zone-id $hosted_zone_id --change-batch '
     {   
-        "Comment": "Creating a record set for '$name'"
+        "Comment": "Creating a record set for '$name'",
         "Changes": [
           {
             "Action": "UPSERT",
