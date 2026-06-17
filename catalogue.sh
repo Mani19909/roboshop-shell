@@ -44,8 +44,10 @@ then
 else
     echo -e "roboshop user already exist... $Y SKIPPING $N"
 fi
+rm -rf /app &>> $LOGFILE
+VALIDATE $? "clean up existing directory"
 
-mkdir /app &>> $LOGFILE
+mkdir -p /app &>> $LOGFILE
 VALIDATE $? "Creating app directory"
 
 curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>> $LOGFILE
@@ -78,9 +80,9 @@ VALIDATE $? "Copying mongo repo"
 dnf install -y mongodb-mongosh &>> $LOGFILE
 VALIDATE $? "Installing mongo client"
 
-SCHMEA_EXISTS=$(mongosh --host $MONGO_HOST --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")  &>> $LOGFILE
+SCHEMA_EXISTS=$(mongosh --host $MONGO_HOST --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")  &>> $LOGFILE
 
-if [ $SCHMEA_EXISTS -lt 0 ]
+if [ $SCHEMA_EXISTS -lt 0 ]
 then
     echo "Schema does not exists ... LOADING"
     mongosh --host $MONGO_HOST </app/schema/catalogue.js &>> $LOGFILE
