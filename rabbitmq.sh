@@ -51,3 +51,4 @@ then
     VALIDATE $? "Setting permissions"
 else
     echo -e "USER already exists... $Y SKIPPING $N"
+fi
