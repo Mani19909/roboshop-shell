@@ -84,3 +84,4 @@ VALIDATE $? "Installing MySQL"
     VALIDATE $? "Loading schema"
 else
     echo "Schema already exists... $Y SKIPPING $N"
+fi
